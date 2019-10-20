@@ -1,0 +1,80 @@
+#include <iostream>
+
+struct Student {
+    std::string name;
+    int idnum;
+    double *tests;
+    double average;
+    char grade;
+};
+
+int main()
+{
+    Student *list;
+    int tsts, students;
+    
+    std::cout << "How many students are there? ";
+    std::cin >> students;
+    std::cout << "How many tests are there? ";
+    std::cin >> tsts;
+    
+    list = new Student[students];
+    
+    for (int i = 0; i < students; i++) {
+
+        std::cout << "Student #" << i + 1 << ":\n";
+        
+        std::cout << "Name: ";
+        //the normal *(ptr + counter).member wasn't working
+        //and the compiler said to try -> so I did lololol
+        std::cin >> (list + i) -> name;
+        
+        std::cout << "Id #: ";
+        std::cin >> (list + i) -> idnum;
+        
+        list[i].tests = new double[tsts];
+        std::cout << "Grades:\n";
+        for (int j = 0; j < tsts; j++) {
+            double score = -99;
+            while (score < 0) {
+                std::cout << "Test #" << j + 1 << " (\%): ";
+                std::cin >> score;
+            }
+            (list + i) -> tests[j] = score;
+        }
+        
+        for (int x = 0; x < tsts; x++) {
+            (list + i) -> average += (list + i) -> tests[x];
+        }
+        (list + i) -> average /= tsts;
+        
+        if ((list + i) -> average >= 91) {
+            (list + i) -> grade = 'A';
+        }
+        else if ((list + i) -> average >= 81) {
+            (list + i) -> grade = 'B';
+        }
+        else if ((list + i) -> average >= 71) {
+            (list + i) -> grade = 'C';
+        }
+        else if ((list + i) -> average >= 61) {
+            (list + i) -> grade = 'D';
+        }
+        else {
+            (list + i) -> grade = 'F';
+        }
+        
+        std::cout << std::endl;
+    }
+    
+    for (int i = 0; i < students; i++) {
+        std::cout << "Student #" << i + 1 << ": ";
+        std::cout << (list + i) -> name << "\n";
+        std::cout << "Id #: " << (list + i) -> idnum << "\n";
+        std::cout << "Average Test Score: " << (list + i) -> average << "%\n";
+        std::cout << "Grade: " << (list + i) -> grade << "\n";
+    }
+    
+
+    return 0;
+}
